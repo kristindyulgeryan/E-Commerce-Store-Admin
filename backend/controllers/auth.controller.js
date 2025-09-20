@@ -10,6 +10,8 @@ export const signup = async (req, res) => {
 
   const user = await User.create({ email, password, name });
 
+  // authenticate user
+
   res.status(201).json({ user, message: "User created succesfully" });
 };
 
