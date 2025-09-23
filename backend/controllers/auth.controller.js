@@ -68,6 +68,7 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   res.send("Login route called");
 };
+
 export const logout = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
