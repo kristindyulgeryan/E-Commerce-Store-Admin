@@ -23,12 +23,15 @@ function App() {
           />
         </div>
       </div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
+
+      <div className="relative z-50 pt-20">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </div>
     </div>
   );
 }
