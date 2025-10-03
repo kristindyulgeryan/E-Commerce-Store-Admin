@@ -2,13 +2,13 @@ import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const user = true;
-  const isAdmin = true;
+  const user = false;
+  const isAdmin = false;
   return (
     <header className="fixed top-0 left-0 w-full bg-[#1C1A17] bg-opacity-95 backdrop-blur-md shadow-lg z-40 transition-all duration-300 border-b border-yellow-800">
       <div className="container mx-auto px-4 py-3">
         <div className="flex flex-wrap justify-between items-center">
-          <Link to="/" className="flex items-center space-x-1 text-yellow-500">
+          <Link to="/" className="flex items-center space-x-1 text-yellow-600">
             <span className="text-3xl" style={{ fontFamily: " cursive" }}>
               AVG
             </span>
@@ -18,7 +18,7 @@ const Navbar = () => {
           <nav className="flex flex-wrap items-center gap-4">
             <Link
               to={"/"}
-              className=" text-gray-300 hover:text-yellow-500 transition duration-300 ease-in-out"
+              className=" text-gray-300 hover:text-yellow-700 transition duration-300 ease-in-out"
             >
               Home
             </Link>
@@ -39,7 +39,7 @@ const Navbar = () => {
               </Link>
             )}
             {isAdmin && (
-              <Link className="bg-yellow-700 hover:bg-yellow-500 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center">
+              <Link className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center">
                 <Lock className="inline-block mr-1" size={18} />
                 <span className="hidden sm:inline">Dashboard</span>
               </Link>
