@@ -10,9 +10,10 @@ const LoginPage = () => {
 
   const { login, loading } = useUserStore();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(e);
-    login({ email, password });
+    console.log(email, password);
+    login(email, password);
   };
 
   return (
