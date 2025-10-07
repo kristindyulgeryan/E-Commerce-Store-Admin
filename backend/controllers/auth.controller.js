@@ -1,6 +1,6 @@
 import { redis } from "../lib/redis.js";
 import User from "../models/user.model.js";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const generateTokens = (userId) => {
   const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
@@ -39,8 +39,8 @@ const setCookies = (res, accessToken, refreshToken) => {
 };
 
 export const signup = async (req, res) => {
+  const { email, password, name } = req.body;
   try {
-    const { email, password, name } = req.body;
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -84,7 +84,7 @@ export const login = async (req, res) => {
         role: user.role,
       });
     } else {
-      res.status(401).json({ message: "Invalid email or password" });
+      res.status(400).json({ message: "Invalid email or password" });
     }
   } catch (error) {
     console.log("Error in login controller", error.message);
@@ -122,9 +122,9 @@ export const refreshToken = async (req, res) => {
     }
 
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-    const storedToekn = await redis.get(`refresh_token:${decoded.userId}`);
+    const storedToken = await redis.get(`refresh_token:${decoded.userId}`);
 
-    if (storedToekn !== refreshToken) {
+    if (storedToken !== refreshToken) {
       return res.status(401).json({ message: "Invalid refresh token" });
     }
 
