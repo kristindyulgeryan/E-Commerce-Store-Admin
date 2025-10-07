@@ -2,15 +2,17 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { LogIn, Mail, Lock, ArrowRight, Loader } from "lucide-react";
+import { useUserStore } from "../stores/useUserStore.js";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loading = false;
+
+  const { login, loading } = useUserStore();
 
   const handleSubmit = (e) => {
     e.preventDefault(e);
-    console.log(email, password);
+    login({ email, password });
   };
 
   return (
@@ -49,7 +51,7 @@ const LoginPage = () => {
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setFormData(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full px-3 py-2 pl-10 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-800 focus:border-gray-400 sm:text-sm"
                   placeholder="you@example.com"
                 />
@@ -72,7 +74,7 @@ const LoginPage = () => {
                   type="password"
                   required
                   value={password}
-                  onChange={(e) => setFormData(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="block w-full px-3 py-2 pl-10 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-800 focus:border-gray-400 sm:text-sm"
                   placeholder="••••••••••"
                 />
