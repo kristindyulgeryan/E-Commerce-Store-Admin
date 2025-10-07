@@ -5,14 +5,13 @@ import { UserPlus, Mail, Lock, User, ArrowRight, Loader } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 
 const SignUpPage = () => {
-  const loading = false;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const { signup } = useUserStore();
+  const { signup, loading } = useUserStore();
   const handleSubmit = (e) => {
     e.preventDefault();
     signup(formData);
