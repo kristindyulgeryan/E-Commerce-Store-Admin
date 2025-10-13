@@ -1,6 +1,9 @@
 import { BarChart, PlusCircle, ShoppingBasket } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import CreateProductForm from "../components/CreateProductForm.jsx";
+import ProductsList from "../components/ProductsList.jsx";
+import AnalyticsTab from "../components/AnalyticsTab.jsx";
 
 const tabs = [
   { id: "create", label: "Create Product", icon: PlusCircle },
@@ -11,7 +14,7 @@ const tabs = [
 export const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("create");
   return (
-    <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
+    <div className="min-h-screen   relative overflow-hidden">
       <div className="relative z-10 container mx-auto px-4 py-16">
         <motion.h1
           className="text-4xl font-bold mb-8 text-yellow-600 text-center"
@@ -25,7 +28,7 @@ export const AdminPage = () => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onclick={() => setActiveTab(tab.id)}
+              onClick={() => setActiveTab(tab.id)}
               className={`flex items-center px-4 py-2 mx-2 rounded-md transition-colors duration-200 ${
                 activeTab === tab.id
                   ? "bg-yellow-600 text-white"
