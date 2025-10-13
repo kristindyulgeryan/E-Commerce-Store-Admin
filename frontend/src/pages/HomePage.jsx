@@ -1,3 +1,5 @@
+import CategoryItem from "../components/CategoryItem";
+
 const categories = [
   { href: "/bracelet", name: "Bracelets", imageUrl: "/bracelet-2.jpg" },
   { href: "/chain", name: "Chains", imageUrl: "/chain-2.jpg" },
@@ -16,6 +18,11 @@ const HomePage = () => {
         <p className="text-center text-xl text-gray-300 mb-12">
           Discover the latest trends on jewelry fashion
         </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categories.map((category) => (
+            <CategoryItem category={category} key={category.name} />
+          ))}
+        </div>
       </div>
     </div>
   );
