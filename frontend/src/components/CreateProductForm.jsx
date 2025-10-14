@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PlusCircle, Upload, Loader } from "lucide-react";
+import { PlusCircle, Upload, Loader, TrafficCone } from "lucide-react";
+import { useProductStore } from "../stores/useProductStore";
 
 const categories = ["chain", "bracelet", "earrings", "ring", "pendant"];
 
@@ -13,7 +14,23 @@ const CreateProductForm = () => {
     image: "",
   });
 
-  const loading = false;
+  const { createProduct, loading } = useProductStore();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await createProduct(newProduct);
+      setNewProduct({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        image: "",
+      });
+    } catch (error) {
+      console.log("Error creating a product");
+    }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -26,11 +43,6 @@ const CreateProductForm = () => {
 
       reader.readAsDataURL(file); // base64
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(newProduct);
   };
 
   return (
