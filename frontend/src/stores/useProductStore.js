@@ -33,14 +33,29 @@ export const useProductStore = create((set) => ({
       toast.error(error.response.data.error || "Faild to fetch products");
     }
   },
-  deleteProduct: async (id) => {},
+  deleteProduct: async (productId) => {
+    set({ loading: true });
+    try {
+      await axios.delete(`/products/${productId}`);
+      set((prevProducts) => ({
+        products: prevProducts.products.filter(
+          (product) => product._id !== productId
+        ),
+        loading: false,
+      }));
+    } catch (error) {
+      set({ loading: false });
+      toast.error(error.response.data.error || "Failed to delete product");
+    }
+  },
+
   toggleFeaturedProduct: async (productId) => {
     set({ loading: true });
     try {
       // this will update the isFeatured prop of the product
       const response = await axios.patch(`/products/${productId}`);
-      set((prevProduct) => ({
-        products: prevProduct.products.map((product) =>
+      set((prevProducts) => ({
+        products: prevProducts.products.map((product) =>
           product._id === productId
             ? { ...product, isFeatured: response.data.isFeatured }
             : product
