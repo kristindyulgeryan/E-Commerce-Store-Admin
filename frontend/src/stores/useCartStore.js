@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
+import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 
 export const userCartStore = create((set, get) => ({
@@ -12,6 +12,7 @@ export const userCartStore = create((set, get) => ({
     try {
       const res = await axios.get("/cart");
       set({ cart: res.data });
+      get().claculateTotals();
     } catch (error) {
       set({ cart: [] });
       toast.error(error.response.data.message || "An error occurred");
@@ -35,8 +36,25 @@ export const userCartStore = create((set, get) => ({
           : [...prevState.cart, { ...product, quantity: 1 }];
         return { cart: newCart };
       });
+      get().claculateTotals();
     } catch (error) {
       toast.error(error.response.data.message || "An error occurred");
     }
+  },
+
+  claculateTotals: () => {
+    const { cart, coupon } = get();
+    const subtotal = cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    let total = subtotal;
+
+    if (coupon) {
+      const discount = subtotal * (coupon.discountPrecentage / 100);
+      total = subtotal - discount;
+    }
+
+    set({ subtotal, total });
   },
 }));
