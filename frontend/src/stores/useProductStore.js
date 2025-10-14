@@ -22,4 +22,34 @@ export const useProductStore = create((set) => ({
       set({ loading: false });
     }
   },
+
+  fetchAllProducts: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.get("/products");
+      set({ products: response.data.products, loding: false });
+    } catch (error) {
+      set({ error: "Faild to fetch products", loading: flase });
+      toast.error(error.response.data.error || "Faild to fetch products");
+    }
+  },
+  deleteProduct: async (id) => {},
+  toggleFeaturedProduct: async (productId) => {
+    set({ loading: true });
+    try {
+      // this will update the isFeatured prop of the product
+      const response = await axios.patch(`/products/${productId}`);
+      set((prevProduct) => ({
+        products: prevProduct.products.map((product) =>
+          product._id === productId
+            ? { ...product, isFeatured: response.data.isFeatured }
+            : product
+        ),
+        loading: false,
+      }));
+    } catch (error) {
+      set({ loading: false });
+      toast.error(error.response.data.error || "Faild to update product");
+    }
+  },
 }));
