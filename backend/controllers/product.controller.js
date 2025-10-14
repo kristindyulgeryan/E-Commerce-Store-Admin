@@ -28,7 +28,11 @@ export const getFeaturedProducts = async (req, res) => {
 
     // store in redis for future quick access
     await redis.set("featured_products", JSON.stringify(featuredProducts));
-  } catch (error) {}
+    return res.json(featuredProducts);
+  } catch (error) {
+    console.log("Error in getFeaturedProducts controller", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
 
 export const createProduct = async (req, res) => {
@@ -139,7 +143,7 @@ export const toggleFeaturedProduct = async (req, res) => {
 async function updateFeaturedProductsCache() {
   try {
     const featuredProducts = await Product.find({ isFeatured: true }).lean();
-    await redis.set("featured_products", json.stringify(featuredProducts));
+    await redis.set("featured_products", JSON.stringify(featuredProducts));
   } catch (error) {
     console.log("error in update cache function", error.message);
   }
