@@ -27,7 +27,7 @@ export const useProductStore = create((set) => ({
     set({ loading: true });
     try {
       const response = await axios.get("/products");
-      set({ products: response.data.products, loding: false });
+      set({ products: response.data.products, loading: false });
     } catch (error) {
       set({ error: "Faild to fetch products", loading: flase });
       toast.error(error.response.data.error || "Faild to fetch products");
