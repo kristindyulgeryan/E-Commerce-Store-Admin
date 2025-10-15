@@ -10,13 +10,19 @@ import LoadingSinner from "./components/LoadingSpinner.jsx";
 import { AdminPage } from "./pages/AdminPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
+import { userCartStore } from "./stores/useCartStore.js";
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
+  const { getCartItems } = userCartStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(() => {
+    getCartItems();
+  }, [getCartItems]);
 
   if (checkingAuth) return <LoadingSinner />;
   return (
