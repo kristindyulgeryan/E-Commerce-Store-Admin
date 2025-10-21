@@ -1,11 +1,11 @@
 import toast from "react-hot-toast";
 import { ShoppingCart } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore.js";
-import { userCartStore } from "../stores/useCartStore.js";
+import { useCartStore } from "../stores/useCartStore.js";
 
 const ProductCard = ({ product }) => {
   const { user } = useUserStore();
-  const { addToCart } = userCartStore();
+  const { addToCart } = useCartStore();
 
   const handleAddToCart = () => {
     if (!user) {
