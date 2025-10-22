@@ -13,7 +13,7 @@ export const useCartStore = create((set, get) => ({
     try {
       const res = await axios.get("/cart");
       set({ cart: res.data });
-      get().claculateTotals();
+      get().calculateTotals();
     } catch (error) {
       set({ cart: [] });
       toast.error(error.response.data.message || "An error occurred");
@@ -37,7 +37,7 @@ export const useCartStore = create((set, get) => ({
           : [...prevState.cart, { ...product, quantity: 1 }];
         return { cart: newCart };
       });
-      get().claculateTotals();
+      get().calculateTotals();
     } catch (error) {
       toast.error(error.response.data.message || "An error occurred");
     }
@@ -48,7 +48,7 @@ export const useCartStore = create((set, get) => ({
     set((prevState) => ({
       cart: prevState.cart.filter((item) => item._id !== productId),
     }));
-    get().claculateTotals();
+    get().calculateTotals();
   },
 
   updateQuantity: async (productId, quantity) => {
@@ -63,10 +63,10 @@ export const useCartStore = create((set, get) => ({
         item._id === productId ? { ...item, quantity } : item
       ),
     }));
-    get().claculateTotals();
+    get().calculateTotals();
   },
 
-  claculateTotals: () => {
+  calculateTotals: () => {
     const { cart, coupon } = get();
     const subtotal = cart.reduce(
       (sum, item) => sum + item.price * item.quantity,
