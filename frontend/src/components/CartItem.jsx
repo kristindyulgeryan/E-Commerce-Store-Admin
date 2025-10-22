@@ -21,11 +21,11 @@ const CartItem = ({ item }) => {
               <Minus className="text-gray-300" />
             </button>
             <p>{item.quantity}</p>
-            <button className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-600 focus:ring-2 focus:ring-yellow-600">
-              <Plus
-                className="text-gray-300"
-                onClick={() => updateQuantity(item._id, item.quantity + 1)}
-              />
+            <button
+              className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-600 focus:ring-2 focus:ring-yellow-600"
+              onClick={() => updateQuantity(item._id, item.quantity + 1)}
+            >
+              <Plus className="text-gray-300" />
             </button>
           </div>
           <div className="text-end md:order-4 md:w-32">
