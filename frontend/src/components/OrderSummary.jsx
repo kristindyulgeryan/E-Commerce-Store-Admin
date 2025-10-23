@@ -59,7 +59,7 @@ const OrderSummary = () => {
         </div>
 
         <motion.button
-          className="flex w-full items-center justify-center rounded-lg bg-yellow-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-600"
+          className="flex w-full items-center justify-center rounded-lg bg-yellow-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none "
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           //   onClick={handleClick}
