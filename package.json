@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/kristindyulgeryan/E-Commerce-Store-Admin#readme",
   "dependencies": {
+    "@stripe/stripe-js": "^8.1.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
