@@ -19,13 +19,14 @@ export const createCheckoutSession = async (req, res) => {
 
       return {
         price_data: {
-          currency: "euro",
+          currency: "eur",
           product_data: {
             name: product.name,
             images: [product.image],
           },
+          unit_amount: amount,
         },
-        unit_amount: amount,
+        quantity: product.quantity || 1,
       };
     });
 
@@ -33,7 +34,7 @@ export const createCheckoutSession = async (req, res) => {
     if (couponCode) {
       coupon = await Coupon.findOne({
         code: couponCode,
-        userId: req.user_id,
+        userId: req.user._id,
         isActive: true,
       });
       if (coupon) {
@@ -43,7 +44,7 @@ export const createCheckoutSession = async (req, res) => {
       }
     }
 
-    const session = await stripe.checkout.session.create({
+    const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
@@ -57,7 +58,7 @@ export const createCheckoutSession = async (req, res) => {
           ]
         : [],
       metadata: {
-        userId: req.user_id.toString(),
+        userId: req.user._id.toString(),
         couponCode: couponCode || "",
         products: JSON.stringify(
           products.map((p) => ({
@@ -74,13 +75,14 @@ export const createCheckoutSession = async (req, res) => {
     }
     res.status(200).json({ id: session.id, totalAmount: totalAmount / 100 });
   } catch (error) {
-    console.log("Error processing successfull checkout:", error);
+    console.error("Error processing checkout:", error);
     res.status(500).json({
-      message: "Error processing successfull checkout",
+      message: "Error processing checkout",
       error: error.message,
     });
   }
 };
+
 export const checkoutSuccess = async (req, res) => {
   try {
     const { sessionId } = req.body;
@@ -147,5 +149,5 @@ async function createNewCoupon(userId) {
 
   await newCoupon.save();
 
-  return newCoupon();
+  return newCoupon;
 }
