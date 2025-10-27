@@ -27,7 +27,7 @@ const OrderSummary = () => {
       const session = res.data;
       window.location.href = session.url;
     } catch (error) {
-      console.error("Checkout error:", err.response?.data || err.message);
+      console.error("Checkout error:", error.response?.data || err.message);
     }
   };
 
