@@ -39,6 +39,6 @@ export const validateCoupon = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in validateCoupon controlelr", error.message);
-    res.status(500).json({ message: "Server error", error: error.messsage });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
