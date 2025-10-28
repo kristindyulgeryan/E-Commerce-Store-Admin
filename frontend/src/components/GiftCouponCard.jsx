@@ -1,17 +1,28 @@
 import { motion } from "framer-motion";
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "../stores/useCartStore.js";
 
 const GiftCouponCard = () => {
   const [userInputCode, setUserInputCode] = useState("");
-  const { coupon, isCouponApplied } = useCartStore();
+  const { coupon, isCouponApplied, applyCoupon, removeCoupon, getMyCoupon } =
+    useCartStore();
 
-  const hanldeApplyCoupon = () => {
-    console.log(userInputCode);
+  useEffect(() => {
+    getMyCoupon();
+  }, [getMyCoupon]);
+
+  useEffect(() => {
+    if (coupon) setUserInputCode(coupon.code);
+  }, [coupon]);
+
+  const handleApplyCoupon = () => {
+    if (!userInputCode) return;
+    applyCoupon(userInputCode);
   };
 
-  const hanldeRemoveCoupon = () => {
-    console.log("remove coupon");
+  const handleRemoveCoupon = async () => {
+    await removeCoupon();
+    setUserInputCode("");
   };
 
   return (
@@ -45,7 +56,7 @@ const GiftCouponCard = () => {
         className="flex w-full items-center justify-center rounded-lg bg-yellow-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none "
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={hanldeApplyCoupon}
+        onClick={handleApplyCoupon}
       >
         Apply Code
       </motion.button>
@@ -53,15 +64,15 @@ const GiftCouponCard = () => {
         <div className="mt-4">
           <h3 className="text-lg font-medium text-gray-300">Applied Coupon</h3>
           <p className="mt-2 text-sm text-gray-400">
-            {coupon.code} - {coupon.discountPercetage}% off
+            {coupon.code} - {coupon.discountPercentage}% off
           </p>
 
           <motion.button
             type="button"
-            className="mt-2 flex-w-full items-center justify-center rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
+            className="mt-2 flex w-full items-center justify-center rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={hanldeRemoveCoupon}
+            onClick={handleRemoveCoupon}
           >
             Remove Coupon
           </motion.button>
@@ -74,7 +85,7 @@ const GiftCouponCard = () => {
             Your Available Coupon:
           </h3>
           <p className="mt-2 text-sm text-gray-400">
-            {coupon.code} - {coupon.discountPercetage}% off
+            {coupon.code} - {coupon.discountPercentage}% off
           </p>
         </div>
       )}
