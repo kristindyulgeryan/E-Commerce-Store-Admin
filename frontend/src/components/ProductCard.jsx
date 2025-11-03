@@ -31,7 +31,9 @@ const ProductCard = ({ product }) => {
         <h5 className="text-xl font-semibold tracking-tight text-white">
           {product.name}
         </h5>
-        <p className="text-yellow-600 font-semibold mb-3">Yellow Gold 14K</p>
+        <p className="text-white font-extralight text-xs  mb-3">
+          Yellow Gold 14K
+        </p>
         <div className="mt-2 mb-5 flex items-center justify-between">
           <p>
             <span className="text-3xl font-bold text-yellow-600 ">

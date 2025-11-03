@@ -65,7 +65,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
                       <h3 className="text-lg font-semibold text-white">
                         {product.name}
                       </h3>
-                      <p className="text-yellow-600 font-semibold mb-3">
+                      <p className="text-white font-extralight text-xs mb-3">
                         Yellow Gold 14K
                       </p>
                       <p className="text-yellow-600 font-medium mb-4">
