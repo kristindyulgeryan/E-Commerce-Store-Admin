@@ -62,9 +62,12 @@ const FeaturedProducts = ({ featuredProducts }) => {
                       />
                     </div>
                     <div className="p-4">
-                      <h3 className="text-lg font-semibold mb-2 text-white">
+                      <h3 className="text-lg font-semibold text-white">
                         {product.name}
                       </h3>
+                      <p className="text-yellow-600 font-semibold mb-3">
+                        Yellow Gold 14K
+                      </p>
                       <p className="text-yellow-600 font-medium mb-4">
                         ${product.price.toFixed(2)}
                       </p>
