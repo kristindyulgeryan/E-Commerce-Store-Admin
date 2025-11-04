@@ -1,19 +1,42 @@
 import Product from "../models/product.model.js";
 
+// export const getCartProducts = async (req, res) => {
+//   try {
+//     const products = await Product.find({ _id: { $in: req.user.cartItems } });
+
+//     // Add quantity for each product
+//     const cartItems = products.map((product) => {
+//       const item = req.user.cartItems.find(
+//         (cartItem) => cartItem.id === product.id
+//       );
+//       return { ...product.toJSON(), quantity: item.quantity };
+//     });
+//     res.json(cartItems);
+//   } catch (error) {
+//     console.log("Error in getCartProducts controller", error.message);
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// };
+
 export const getCartProducts = async (req, res) => {
   try {
-    const products = await Product.find({ _id: { $in: req.user.cartItems } });
+    // Extract product IDs from cart items
+    const productIds = req.user.cartItems.map((item) => item.product);
 
-    // Add quantity for each product
+    // Fetch product details from MongoDB
+    const products = await Product.find({ _id: { $in: productIds } }).lean();
+
+    // Map products to include quantity
     const cartItems = products.map((product) => {
       const item = req.user.cartItems.find(
-        (cartItem) => cartItem.id === product.id
+        (cartItem) => cartItem.product.toString() === product._id.toString()
       );
-      return { ...product.toJSON(), quantity: item.quantity };
+      return { ...product, quantity: item?.quantity || 1 };
     });
+
     res.json(cartItems);
   } catch (error) {
-    console.log("Error in getCartProducts controller", error.message);
+    console.error("Error in getCartProducts controller", error.message);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

@@ -56,7 +56,7 @@ export const useCartStore = create((set, get) => ({
       toast.success("Product added to cart");
       set((prevState) => {
         const existingItem = prevState.cart.find(
-          (item) => item._id === product._id
+          (item) => item.product._id === product._id
         );
         const newCart = existingItem
           ? prevState.cart.map((item) =>
