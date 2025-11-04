@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon backend/server.js",
     "start": "node backend/server.js",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "echo 'Frontend build managed by Render Root Directory setting'" 
   },
   "repository": {
     "type": "git",
