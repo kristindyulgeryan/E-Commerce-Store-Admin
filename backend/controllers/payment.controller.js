@@ -71,10 +71,16 @@ export const createCheckoutSession = async (req, res) => {
       },
     });
 
+    let newCoupon = null;
+
     if (totalAmount >= 20000) {
-      await createNewCoupon(req.user._id);
+      newCoupon = await createNewCoupon(req.user._id);
     }
-    res.status(200).json({ url: session.url, totalAmount: totalAmount / 100 });
+    res.status(200).json({
+      url: session.url,
+      totalAmount: totalAmount / 100,
+      couponCreated: !!newCoupon,
+    });
   } catch (error) {
     console.error("Error processing checkout:", error);
     res.status(500).json({
