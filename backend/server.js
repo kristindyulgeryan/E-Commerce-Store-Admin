@@ -8,7 +8,6 @@ import cartRoutes from "./routes/cart.route.js";
 import couponRoutes from "./routes/coupon.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import analyticsRoutes from "./routes/analytics.routes.js";
-import fs from "fs";
 
 import { connectDB } from "./lib/db.js";
 
@@ -29,28 +28,27 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "frontend/dist")));
-
-//   app.get("/{*any}", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "frontend/dist/index.html"));
-//   });
-// }
-
 if (process.env.NODE_ENV === "production") {
-  // Проверка дали frontend/dist съществува
-  const frontendPath = path.join(__dirname, "frontend/dist");
+  app.use(express.static(path.join(__dirname, "frontend/dist")));
 
-  if (fs.existsSync(frontendPath)) {
-    app.use(express.static(frontendPath));
-
-    app.get("/*", (req, res) => {
-      res.sendFile(path.resolve(frontendPath, "index.html"));
-    });
-  } else {
-    console.log("Frontend build not found, serving API only");
-  }
+  app.get("/{*any}", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend/dist/index.html"));
+  });
 }
+
+// if (process.env.NODE_ENV === "production") {
+//   const frontendPath = path.join(__dirname, "frontend/dist");
+
+//   if (fs.existsSync(frontendPath)) {
+//     app.use(express.static(frontendPath));
+
+//     app.get("/*", (req, res) => {
+//       res.sendFile(path.resolve(frontendPath, "index.html"));
+//     });
+//   } else {
+//     console.log("Frontend build not found, serving API only");
+//   }
+// }
 
 app.listen(PORT, () => {
   console.log("Server is running on http://localhost:" + PORT);
