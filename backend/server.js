@@ -36,20 +36,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// if (process.env.NODE_ENV === "production") {
-//   const frontendPath = path.join(__dirname, "frontend/dist");
-
-//   if (fs.existsSync(frontendPath)) {
-//     app.use(express.static(frontendPath));
-
-//     app.get("/*", (req, res) => {
-//       res.sendFile(path.resolve(frontendPath, "index.html"));
-//     });
-//   } else {
-//     console.log("Frontend build not found, serving API only");
-//   }
-// }
-
 app.listen(PORT, () => {
   console.log("Server is running on http://localhost:" + PORT);
   connectDB();
