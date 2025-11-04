@@ -24,14 +24,8 @@ const OrderSummary = () => {
         products: cart,
         couponCode: coupon ? coupon.code : null,
       });
-      const { url, couponCreated } = res.data;
-
-      if (couponCreated) {
-        await useCartStore.getState().getMyCoupon();
-        console.log("New loyalty coupon created and loaded successfully.");
-      }
-
-      window.location.href = url;
+      const session = res.data;
+      window.location.href = session.url;
     } catch (error) {
       console.error("Checkout error:", error.response?.data || err.message);
     }
