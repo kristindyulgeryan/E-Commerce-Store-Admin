@@ -1,6 +1,7 @@
 import { stripe } from "../lib/stripe.js";
 import Coupon from "../models/coupon.model.js";
 import Order from "../models/order.model.js";
+import User from "../models/user.model.js";
 
 export const createCheckoutSession = async (req, res) => {
   try {
@@ -109,11 +110,26 @@ export const checkoutSuccess = async (req, res) => {
           quantity: product.quantity,
           price: product.price,
         })),
-        totalAmount: session.amount_total / 100, // convert from cents to dollars
+        totalAmount: session.amount_total / 100,
         stripeSessionId: sessionId,
       });
 
       await newOrder.save();
+
+      const userId = session.metadata.userId;
+      const user = await User.findById(userId);
+
+      if (user) {
+        // clear cartItems
+        user.cartItems = [];
+        await user.save();
+        console.log(`Cart cleared for user: ${userId}`);
+      } else {
+        console.log(
+          `User not found for ID: ${userId}. Cart could not be cleared.`
+        );
+      }
+
       res.status(200).json({
         success: true,
         message:
