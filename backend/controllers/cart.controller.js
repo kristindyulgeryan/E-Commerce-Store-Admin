@@ -47,7 +47,7 @@ export const addToCart = async (req, res) => {
     const user = req.user;
 
     const existingItem = user.cartItems.find(
-      (item) => item.product.toString() === productId
+      (item) => item.product && item.product.toString() === productId
     );
 
     if (existingItem) {
