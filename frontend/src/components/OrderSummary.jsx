@@ -23,14 +23,16 @@ const OrderSummary = () => {
   useEffect(() => {
     const checkForCoupon = async () => {
       try {
-        const res = await axios.get(`/coupons?subtotal=${subtotal}`);
-        const couponData = res.data;
+        if (!coupon && subtotal >= 200) {
+          const res = await axios.get(`/coupons?subtotal=${subtotal}`);
+          const couponData = res.data;
 
-        if (couponData && !coupon) {
-          setCoupon(couponData);
+          if (couponData) {
+            setCoupon(couponData);
 
-          if (!isCouponApplied) {
-            useCartStore.getState().applyCoupon(couponData.code);
+            if (!isCouponApplied) {
+              useCartStore.getState().applyCoupon(couponData.code);
+            }
           }
         }
       } catch (error) {
@@ -39,7 +41,7 @@ const OrderSummary = () => {
     };
 
     checkForCoupon();
-  }, [subtotal, coupon, setCoupon, isCouponApplied]);
+  }, [subtotal, coupon, setCoupon, isCouponApplied, cart.length]);
 
   const handlePayment = async () => {
     try {
