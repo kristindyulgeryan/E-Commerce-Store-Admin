@@ -1,11 +1,35 @@
 import Coupon from "../models/coupon.model.js";
 
+async function createNewCoupon(userId) {
+  await Coupon.findOneAndDelete({ userId });
+  const newCoupon = new Coupon({
+    code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+    discountPercentage: 10,
+    expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30 days
+    userId,
+  });
+
+  await newCoupon.save();
+
+  return newCoupon;
+}
+
 export const getCoupon = async (req, res) => {
   try {
     const coupon = await Coupon.findOne({
       userId: req.user._id,
       isActive: true,
     });
+
+    if (
+      !coupon &&
+      req.query.subtotal &&
+      parseFloat(req.query.subtotal) >= 200
+    ) {
+      const newCoupon = await createNewCoupon(req.user._id);
+      return res.json(newCoupon);
+    }
+
     res.json(coupon || null);
   } catch (error) {
     console.log("Error in getCoupon controlelr", error.message);

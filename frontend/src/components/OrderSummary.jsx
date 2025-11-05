@@ -4,6 +4,7 @@ import { MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "../lib/axios.js";
+import { useEffect } from "react";
 
 const stripePromise = loadStripe(
   "pk_test_51SChpME5vHFQInsc1BGbgApxXWavUCfETYT2gsYesZIJV5PvSrQC9IWerFKMgwJT8AiEfsEAlwOvzvIL3iXmGPnl00E0XSfA9w",
@@ -11,12 +12,34 @@ const stripePromise = loadStripe(
 );
 
 const OrderSummary = () => {
-  const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
+  const { total, subtotal, coupon, isCouponApplied, cart, setCoupon } =
+    useCartStore();
 
   const savings = subtotal - total;
   const formattedSubtotal = subtotal.toFixed(2);
   const formattedTotal = total.toFixed(2);
   const formattedSavings = savings.toFixed(2);
+
+  useEffect(() => {
+    const checkForCoupon = async () => {
+      try {
+        const res = await axios.get(`/coupons?subtotal=${subtotal}`);
+        const couponData = res.data;
+
+        if (couponData && !coupon) {
+          setCoupon(couponData);
+
+          if (!isCouponApplied) {
+            useCartStore.getState().applyCoupon(couponData.code);
+          }
+        }
+      } catch (error) {
+        console.error("Error checking coupon:", error);
+      }
+    };
+
+    checkForCoupon();
+  }, [subtotal, coupon, setCoupon, isCouponApplied]);
 
   const handlePayment = async () => {
     try {
@@ -25,9 +48,10 @@ const OrderSummary = () => {
         couponCode: coupon ? coupon.code : null,
       });
       const session = res.data;
+
       window.location.href = session.url;
     } catch (error) {
-      console.error("Checkout error:", error.response?.data || err.message);
+      console.error("Checkout error:", error.response?.data || error.message);
     }
   };
 

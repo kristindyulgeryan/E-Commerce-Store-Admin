@@ -70,16 +70,12 @@ export const createCheckoutSession = async (req, res) => {
         ),
       },
     });
-
-    let newCoupon = null;
-
-    if (totalAmount >= 20000) {
-      newCoupon = await createNewCoupon(req.user._id);
-    }
+    // if (totalAmount >= 20000) {
+    //   await createNewCoupon(req.user._id);
+    // }
     res.status(200).json({
       url: session.url,
       totalAmount: totalAmount / 100,
-      couponCreated: !!newCoupon,
     });
   } catch (error) {
     console.error("Error processing checkout:", error);
@@ -161,16 +157,16 @@ async function createStripeCoupon(discountPercentage) {
   return coupon.id;
 }
 
-async function createNewCoupon(userId) {
-  await Coupon.findOneAndDelete({ userId });
-  const newCoupon = new Coupon({
-    code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-    discountPercentage: 10,
-    expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    userId,
-  });
+// async function createNewCoupon(userId) {
+//   await Coupon.findOneAndDelete({ userId });
+//   const newCoupon = new Coupon({
+//     code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+//     discountPercentage: 10,
+//     expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30 days
+//     userId,
+//   });
 
-  await newCoupon.save();
+//   await newCoupon.save();
 
-  return newCoupon;
-}
+//   return newCoupon;
+// }
